@@ -11,6 +11,8 @@ import {
 } from "react-router";
 import ErrorPage from "./components/error/ErrorPage";
 import Layout from "./components/layout/Layout";
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 const router = createBrowserRouter([
   {
@@ -27,9 +29,9 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
-      { 
-        index: true, 
-        element: <Home /> 
+      {
+        index: true,
+        element: <Home />
       },
     ],
   },
@@ -38,7 +40,9 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
 
