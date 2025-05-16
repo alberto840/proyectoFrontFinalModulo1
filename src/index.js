@@ -4,6 +4,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Login from "./components/login/loginView";
 import RegisterView from "./components/register/registerView";
+import RegisterTaskView from "./components/registerTask/registerTask";
 import Home from "./components/home/homeView";
 import {
   createBrowserRouter,
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
+      },
+      {
+        path: "crear",
+        element: <RegisterTaskView />
       },
     ],
   },

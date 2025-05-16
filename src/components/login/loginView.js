@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../features/auth/authSlice';
+import { NavLink } from "react-router";
 
 const LoginView = () => {
     const [formData, setFormData] = useState({
@@ -29,10 +30,9 @@ const LoginView = () => {
             }));
             
             if (loginUser.fulfilled.match(resultAction)) {
-                navigate('/tareas'); // Redirige si el login es exitoso
+                navigate('/tareas');
             }
         } catch (err) {
-            // El error ya está manejado en el slice
         }
     };
 
@@ -40,9 +40,9 @@ const LoginView = () => {
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <img
-                    alt="Your Company"
-                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                    className="mx-auto h-10 w-auto"
+                    alt=""
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7yq6VwH4nY_1_oWzTYHU0LMNMljViNza_XQ&s"
+                    className="mx-auto h-12 w-auto"
                 />
             </div>
 
@@ -109,11 +109,11 @@ const LoginView = () => {
 
                 <p className="mt-10 text-center text-sm/6 text-gray-500">
                     ¿No estas registrado?{' '}
-                    <a
+                    <NavLink
                         to="/register"
                         className="font-semibold text-indigo-600 hover:text-indigo-500">
                         Registrate aqui!
-                    </a>
+                    </NavLink>
                 </p>
             </div>
         </div>

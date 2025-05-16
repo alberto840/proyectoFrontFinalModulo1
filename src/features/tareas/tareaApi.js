@@ -10,6 +10,13 @@ const getAll = async (userId) => {
   return response;
 };
 
+const getByName = async (titulo) => {
+  const response = await axios.get(`${API_URL}/titulo/${titulo}`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+  });
+  return response;
+}
+
 const create = async (taskData) => {
   const response = await axios.post(API_URL, taskData, {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -32,4 +39,35 @@ const deleteTask = async (id, userId) => {
   return response;
 };
 
-export default { getAll, create, update, delete: deleteTask };
+const iniciarTarea = async (id) => {
+  const response = await axios.patch(`${API_URL}/${id}/iniciar`, {}, { // Method changed to POST, empty body
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+  });
+  return response;
+};
+
+const completarTarea = async (id) => {
+  const response = await axios.patch(`${API_URL}/${id}/completar`, {}, {  // Method changed to POST, empty body
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+  });
+  return response;
+};
+
+const getTareasPorEstado = async (userId, estado) => {
+    const response = await axios.get(`${API_URL}/estado/${estado}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        params: { usuario: userId }
+    });
+    return response;
+};
+
+export default {
+  getAll,
+  getByName,
+  create,
+  update,
+  delete: deleteTask, // Corrected export name
+  iniciarTarea,
+  completarTarea,
+  getTareasPorEstado
+};
