@@ -1,10 +1,11 @@
 import React from "react";
 import { useDispatch } from 'react-redux';
-import { startTask, completeTask, deleteTask } from '../../features/tareas/tareaSlice'; // Importa deleteTask action
+import { startTask, completeTask } from '../../features/tareas/tareaSlice';
 
 const TaskCard = ({ _id, created_at, titulo, usuarioId, descripcion, fecha_limite, estado }) => {
   const dispatch = useDispatch();
 
+  // Determinar el color según el estado
   const estadoStyles = {
     pendiente: "bg-indigo-600 text-white hover:bg-indigo-700",
     en_progreso: "bg-yellow-100 text-yellow-900 hover:bg-yellow-300",
@@ -33,10 +34,7 @@ const TaskCard = ({ _id, created_at, titulo, usuarioId, descripcion, fecha_limit
     } else if (estado.toLowerCase() === 'en_progreso') {
       dispatch(completeTask(_id));
     }
-  };
-
-  const handleDeleteClick = () => {
-    dispatch(deleteTask({ id: _id, userId: usuarioId }));
+    // Optionally, you can handle the 'completada' state (e.g., show a message)
   };
 
   return (
@@ -61,7 +59,7 @@ const TaskCard = ({ _id, created_at, titulo, usuarioId, descripcion, fecha_limit
         </h3>
         <p className="mt-5 line-clamp-3 text-sm/6 text-gray-800">{descripcion}</p>
       </div>
-      <div className="mt-8 flex items-center justify-between"> {/* Utilizamos justify-between para alinear los elementos */}
+      <div className="relative mt-8 flex items-center gap-x-4">
         <div className="text-sm/6">
           <p className="font-semibold text-gray-900">
             <a>
@@ -82,16 +80,6 @@ const TaskCard = ({ _id, created_at, titulo, usuarioId, descripcion, fecha_limit
           })}
           </p>
         </div>
-        {estado.toLowerCase() === 'completada' && ( // Renderiza el botón solo si el estado es "completada"
-          <button
-            onClick={handleDeleteClick}
-            className="ml-10 mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus-shadow-outline"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-5a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-          </button>
-        )}
       </div>
     </article>
   );
