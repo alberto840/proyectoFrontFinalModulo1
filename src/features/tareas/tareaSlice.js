@@ -26,6 +26,18 @@ export const fetchTasksByName = createAsyncThunk(
   }
 );
 
+export const fetchTasksByDateRange = createAsyncThunk(
+  'tasks/fetchByDateRange',
+  async ({ fechaInicio, fechaFin }, { getState, rejectWithValue }) => {
+    try {
+      const response = await tasksAPI.getByDateRange(fechaInicio, fechaFin);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 export const addTask = createAsyncThunk(
   'tasks/add',
   async (taskData, { getState, rejectWithValue }) => {
@@ -54,10 +66,9 @@ export const updateTask = createAsyncThunk(
 
 export const deleteTask = createAsyncThunk(
   'tasks/delete',
-  async (id, { getState, rejectWithValue }) => {
+  async ({ id, userId }, { rejectWithValue }) => {
     try {
-      const { auth } = getState();
-      await tasksAPI.delete(id, auth.user.id);
+      await tasksAPI.delete(id, userId);
       return id;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -110,6 +121,9 @@ const tasksSlice = createSlice({
     error: null,
     searchResults: [],
     searchLoading: false,
+    dateRangeLoading: false,
+    dateRangeResults: [],
+    dateRangeError: null,
   },
   reducers: {
     clearSearchResults: (state) => {
@@ -130,7 +144,7 @@ const tasksSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      
+
       .addCase(fetchTasksByName.pending, (state) => {
         state.searchLoading = true;
         state.error = null;
@@ -143,7 +157,20 @@ const tasksSlice = createSlice({
         state.searchLoading = false;
         state.error = action.payload;
       })
-      
+      .addCase(fetchTasksByDateRange.pending, (state) => {
+        state.dateRangeLoading = true;
+        state.dateRangeError = null;
+        state.dateRangeResults = [];
+      })
+      .addCase(fetchTasksByDateRange.fulfilled, (state, action) => {
+        state.dateRangeLoading = false;
+        state.dateRangeResults = action.payload;
+      })
+      .addCase(fetchTasksByDateRange.rejected, (state, action) => {
+        state.dateRangeLoading = false;
+        state.dateRangeError = action.payload;
+      })
+
       .addCase(addTask.fulfilled, (state, action) => {
         state.items.push(action.payload);
       })
@@ -186,3 +213,7 @@ const tasksSlice = createSlice({
 
 export const { clearSearchResults } = tasksSlice.actions;
 export default tasksSlice.reducer;
+
+export const selectDateRangeResults = (state) => state.tasks.dateRangeResults;
+export const selectDateRangeLoading = (state) => state.tasks.dateRangeLoading;
+export const selectDateRangeError = (state) => state.tasks.dateRangeError;

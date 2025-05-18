@@ -38,7 +38,6 @@ const deleteTask = async (id, userId) => {
   });
   return response;
 };
-
 const iniciarTarea = async (id) => {
   const response = await axios.patch(`${API_URL}/${id}/iniciar`, {}, { // Method changed to POST, empty body
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -61,13 +60,21 @@ const getTareasPorEstado = async (userId, estado) => {
     return response;
 };
 
+const getByDateRange = async (fechaInicio, fechaFin) => {
+  const response = await axios.post(`${API_URL}/fechas`, { fechaInicio, fechaFin }, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+  });
+  return response;
+};
+
 export default {
   getAll,
   getByName,
   create,
   update,
-  delete: deleteTask, // Corrected export name
+  delete: deleteTask,
   iniciarTarea,
   completarTarea,
-  getTareasPorEstado
+  getTareasPorEstado,
+  getByDateRange
 };

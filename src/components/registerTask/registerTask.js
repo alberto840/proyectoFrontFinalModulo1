@@ -57,7 +57,6 @@ const RegisterTask = () => {
 
             <form onSubmit={handleSubmit} className="mx-auto mt-8 max-w-xl sm:mt-10">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                    {/* Campo Título */}
                     <div className="sm:col-span-2">
                         <label htmlFor="titulo" className="block text-sm/6 font-semibold text-gray-900">
                             Título
@@ -92,7 +91,6 @@ const RegisterTask = () => {
                         </div>
                     </div>
 
-                    {/* Campo Fecha Límite */}
                     <div className="sm:col-span-2">
                         <label htmlFor="fecha_limite" className="block text-sm/6 font-semibold text-gray-900">
                             Fecha Límite
